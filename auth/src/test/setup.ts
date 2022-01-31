@@ -15,10 +15,13 @@ beforeAll(async () => {
   process.env.JWT_KEY = 'asdfasdf';
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-  mongo = await MongoMemoryServer.create();
-  const mongoUri = mongo.getUri();
+  mongo = new MongoMemoryServer();
+  const mongoUri = await mongo.getUri();
 
-  await mongoose.connect(mongoUri);
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 });
 
 beforeEach(async () => {
